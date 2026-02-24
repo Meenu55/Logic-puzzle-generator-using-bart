@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Logic Puzzle Generator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>Logic Puzzle Generator</h1>
+    <p class="tagline">AI-Powered Reasoning Made Fun</p>
+
+    <div class="input-card">
+        <input type="text" id="instruction" placeholder="Enter your puzzle instruction...">
+
+        <select id="puzzleType">
+            <option value="">Select Puzzle Type</option>
+            <option>Seating Arrangement</option>
+            <option>Logical Reasoning</option>
+            <option>Number Logic</option>
+            <option>Direction Sense</option>
+        </select>
+
+        <select id="difficulty">
+            <option value="">Select Difficulty</option>
+            <option>Easy</option>
+            <option>Medium</option>
+            <option>Hard</option>
+        </select>
+
+        <button onclick="generatePuzzle()">Generate Puzzle</button>
+
+        <div id="loader" class="loader hidden">
+    <div class="spinner"></div>
+    <p>Generating puzzle...</p>
+</div>
+
+    </div>
+
+    <div class="output-card hidden" id="output">
+        <h3>Puzzle</h3>
+        <p id="puzzleText"></p>
+
+        <button class="toggle" onclick="toggleAnswer()">Show Answer</button>
+
+        <div id="answerBox" class="hidden">
+            <h3>Answer</h3>
+            <p id="answerText"></p>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
