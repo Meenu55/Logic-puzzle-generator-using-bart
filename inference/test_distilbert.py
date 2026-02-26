@@ -1,17 +1,22 @@
 import torch
 import pickle
+from pathlib import Path
 from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassification
 
+# Resolve paths relative to this file's location
+ROOT = Path(__file__).resolve().parent.parent
+MODEL_PATH = ROOT / "models" / "distilbert"
+CHECKPOINT_PATH = MODEL_PATH / "checkpoint-300"
+LABEL_ENCODER_PATH = ROOT / "training" / "label_encoder.pkl"
+
 # Load tokenizer
-tokenizer = DistilBertTokenizerFast.from_pretrained("models/distilbert")
+tokenizer = DistilBertTokenizerFast.from_pretrained(str(MODEL_PATH))
 
 # Load trained model (FINAL CHECKPOINT)
-model = DistilBertForSequenceClassification.from_pretrained(
-    "models/distilbert/checkpoint-300"
-)
+model = DistilBertForSequenceClassification.from_pretrained(str(CHECKPOINT_PATH))
 
 # Load label encoder
-with open("training/label_encoder.pkl", "rb") as f:
+with open(LABEL_ENCODER_PATH, "rb") as f:
     label_encoder = pickle.load(f)
 
 model.eval()

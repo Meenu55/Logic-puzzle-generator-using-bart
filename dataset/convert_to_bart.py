@@ -1,9 +1,9 @@
 import json
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent
-IN = ROOT / "bert_dataset.json"
-OUT = ROOT.parent / "training" / "bart_dataset.json"
+ROOT = Path(__file__).resolve().parent.parent
+IN = ROOT / "dataset" / "bert_dataset.json"
+OUT = ROOT / "training" / "bart_dataset.json"
 
 def main():
     with open(IN, encoding='utf-8') as f:

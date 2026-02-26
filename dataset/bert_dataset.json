@@ -133,7 +133,7 @@
     "difficulty": "Medium",
     "puzzle": "Find the next number in the series: 2, 6, 12, 20, ?",
     "question": "Find the missing or next number in the series.",
-    "answer": "Next number"
+    "answer": "30"
   },
   {
     "instruction": "Generate a medium clock puzzle",
@@ -261,7 +261,7 @@
     "difficulty": "Medium",
     "puzzle": "Z, X, U, Q, ?",
     "question": "What is the next letter in the series?",
-    "answer": "Next letter"
+    "answer": "M"
   },
   {
     "instruction": "Generate a easy syllogism puzzle",
@@ -325,7 +325,7 @@
     "difficulty": "Easy",
     "puzzle": "Z, X, U, Q, ?",
     "question": "What is the next letter in the series?",
-    "answer": "Next letter"
+    "answer": "M"
   },
   {
     "instruction": "Generate a easy blood relation puzzle",
@@ -349,7 +349,7 @@
     "difficulty": "Hard",
     "puzzle": "Z, X, U, Q, ?",
     "question": "What is the next letter in the series?",
-    "answer": "Next letter"
+    "answer": "M"
   },
   {
     "instruction": "Generate a hard logical deduction puzzle",
@@ -365,7 +365,7 @@
     "difficulty": "Easy",
     "puzzle": "Find the next number in the series: 2, 6, 12, 20, ?",
     "question": "Find the missing or next number in the series.",
-    "answer": "Next number"
+    "answer": "30"
   },
   {
     "instruction": "Generate a hard number logic puzzle",
@@ -373,7 +373,7 @@
     "difficulty": "Hard",
     "puzzle": "Find the next number in the series: 2, 6, 12, 20, ?",
     "question": "Find the missing or next number in the series.",
-    "answer": "Next number"
+    "answer": "30"
   },
   {
     "instruction": "Generate a easy direction sense puzzle",
@@ -389,7 +389,7 @@
     "difficulty": "Hard",
     "puzzle": "A, C, F, J, ?",
     "question": "What is the next letter in the series?",
-    "answer": "Next letter"
+    "answer": "O"
   },
   {
     "instruction": "Generate a easy alphabet series puzzle",
@@ -397,7 +397,7 @@
     "difficulty": "Easy",
     "puzzle": "A, C, F, J, ?",
     "question": "What is the next letter in the series?",
-    "answer": "Next letter"
+    "answer": "O"
   },
   {
     "instruction": "Generate a hard syllogism puzzle",
@@ -2717,7 +2717,7 @@
     "difficulty": "Easy",
     "puzzle": "C, H, M, R, W, ?",
     "question": "Find the answer.",
-    "answer": "\\"
+    "answer": "B"
   },
   {
     "instruction": "Generate a easy direction sense puzzle",
@@ -3965,7 +3965,7 @@
     "difficulty": "Hard",
     "puzzle": "E, J, M, R, V, ?",
     "question": "Find the answer.",
-    "answer": "["
+    "answer": "A"
   },
   {
     "instruction": "Generate a hard direction sense puzzle",
@@ -4349,7 +4349,7 @@
     "difficulty": "Easy",
     "puzzle": "C, H, L, Q, V, ?",
     "question": "Find the answer.",
-    "answer": "["
+    "answer": "A"
   },
   {
     "instruction": "Generate a easy alphabet series puzzle",

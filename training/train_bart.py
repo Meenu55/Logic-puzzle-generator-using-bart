@@ -1,9 +1,15 @@
 import json
+from pathlib import Path
 from datasets import Dataset
 from transformers import BartTokenizer, BartForConditionalGeneration, Trainer, TrainingArguments
 
+# Resolve paths relative to this file's location
+ROOT = Path(__file__).resolve().parent.parent
+BART_DATASET_PATH = ROOT / "training" / "bart_dataset.json"
+BART_MODEL_PATH = ROOT / "models" / "bart"
+
 # Load BART dataset (converted from bert_dataset.json)
-with open("training/bart_dataset.json", encoding='utf-8') as f:
+with open(BART_DATASET_PATH, encoding='utf-8') as f:
     data = json.load(f)
 
 dataset = Dataset.from_list(data)
@@ -32,7 +38,7 @@ tokenized_dataset = dataset.map(tokenize_function, batched=False)
 model = BartForConditionalGeneration.from_pretrained("facebook/bart-base")
 
 training_args = TrainingArguments(
-    output_dir="./bart_model",
+    output_dir=str(BART_MODEL_PATH),
     per_device_train_batch_size=4,
     num_train_epochs=3,
     logging_steps=50,
@@ -50,7 +56,7 @@ trainer = Trainer(
 
 trainer.train()
 
-model.save_pretrained("./bart_model")
-tokenizer.save_pretrained("./bart_model")
+model.save_pretrained(str(BART_MODEL_PATH))
+tokenizer.save_pretrained(str(BART_MODEL_PATH))
 
 print("✅ BART training completed and model saved to ./bart_model")

@@ -69,7 +69,7 @@ button:hover {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 @keyframes fadeIn {
@@ -97,5 +97,133 @@ button:hover {
     to {
         transform: rotate(360deg);
     }
+}
+
+/* Modal styles - FULL SCREEN OPAQUE OVERLAY */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9) !important;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    overflow: hidden;
+}
+
+.modal.hidden {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+.modal-content {
+    width: 85%;
+    max-width: 600px;
+    background: #1a1a2e;
+    border-radius: 12px;
+    padding: 30px;
+    color: white;
+    position: relative;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.9);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 10001;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.close {
+    position: absolute;
+    right: 16px;
+    top: 12px;
+    background: transparent;
+    border: none;
+    color: white;
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    z-index: 10002;
+}
+.modal-puzzle {
+    font-size: 1.05rem;
+    margin: 0;
+    color: #ffffff;
+    line-height: 1.5;
+}
+
+.modal-question {
+    font-weight: 600;
+    margin: 0;
+    color: #64b5f6;
+    font-size: 0.98rem;
+}
+
+.modal-answer-box {
+    background: linear-gradient(135deg, rgba(0, 255, 200, 0.15), rgba(100, 181, 246, 0.1));
+    padding: 16px;
+    border-radius: 8px;
+    min-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(0, 255, 200, 0.2);
+}
+
+.modal-answer-text {
+    margin: 0;
+    font-size: 1.02rem;
+    color: #00ffcc;
+    font-weight: 600;
+    text-align: center;
+}
+
+.modal .toggle {
+    width: 80%;
+    margin: 8px auto 0 auto;
+    background: #00ffcc;
+    color: #000;
+    font-weight: 600;
+    padding: 12px;
+    border-radius: 6px;
+}
+
+.modal .toggle:hover {
+    background: #00dd99;
+    transform: scale(1.02);
+}
+
+/* modal section (puzzle/question/answer) common styles */
+.modal-section {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-section h4 {
+    margin: 0 0 10px 0;
+    font-size: 0.9rem;
+    color: #00ffcc;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Question text in main page */
+.question {
+    font-style: italic;
+    color: #e8f5ff;
+    margin-top: 8px;
+}
+
+@media (min-width: 768px) {
+    .container { max-width: 760px; }
+    h1 { font-size: 3rem; }
 }
 

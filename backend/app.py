@@ -2,19 +2,27 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import torch
 import pickle
+import json
+from pathlib import Path
 from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassification
 
 app = Flask(__name__)
 CORS(app)
 
-# Load DistilBERT tokenizer and model
-tokenizer = DistilBertTokenizerFast.from_pretrained("models/distilbert")
-model = DistilBertForSequenceClassification.from_pretrained(
-    "models/distilbert/checkpoint-300"
-)
+# Resolve paths relative to this file's location
+ROOT = Path(__file__).resolve().parent.parent
+MODEL_PATH = ROOT / "models" / "distilbert"
+CHECKPOINT_PATH = MODEL_PATH / "checkpoint-300"
+LABEL_ENCODER_PATH = ROOT / "training" / "label_encoder.pkl"
+DATASET_PATH = ROOT / "dataset" / "bert_dataset.json"
 
-# Load label encoder
-with open("training/label_encoder.pkl", "rb") as f:
+print("Loading DistilBERT tokenizer...")
+tokenizer = DistilBertTokenizerFast.from_pretrained(str(MODEL_PATH))
+print("Loading DistilBERT model...")
+model = DistilBertForSequenceClassification.from_pretrained(str(CHECKPOINT_PATH))
+
+print("Loading label encoder...")
+with open(LABEL_ENCODER_PATH, "rb") as f:
     label_encoder = pickle.load(f)
 
 model.eval()
@@ -38,51 +46,57 @@ def generate():
     puzzle_type = data.get("puzzle_type", "")
     difficulty = data.get("difficulty", "")
 
-    # If puzzle_type and difficulty are provided, use them directly
-    if puzzle_type and difficulty:
-        # Lookup puzzle from dataset
-        import json
-        with open("dataset/bert_dataset.json", "r", encoding="utf-8") as f:
+    try:
+        # Load dataset
+        with open(DATASET_PATH, "r", encoding="utf-8") as f:
             dataset = json.load(f)
-        # Find a matching puzzle
-        filtered = [item for item in dataset if item["puzzle_type"] == puzzle_type and item["difficulty"] == difficulty]
-        if filtered:
-            puzzle = filtered[0]["puzzle"]
-            answer = filtered[0]["answer"]
+
+        # If puzzle_type and difficulty are provided, use them directly
+        if puzzle_type and difficulty:
+            # Find a matching puzzle
+            filtered = [item for item in dataset if item["puzzle_type"] == puzzle_type and item["difficulty"] == difficulty]
+            if filtered:
+                puzzle = filtered[0].get("puzzle", "")
+                answer = filtered[0].get("answer", "")
+                question = filtered[0].get("question", "")
+            else:
+                puzzle = "No puzzle found for this type and difficulty."
+                answer = "N/A"
+                question = ""
+            return jsonify({
+                "puzzle_type": puzzle_type,
+                "difficulty": difficulty,
+                "puzzle": puzzle,
+                "question": question,
+                "answer": answer
+            })
         else:
-            puzzle = "No puzzle found for this type and difficulty."
-            answer = "N/A"
-        return jsonify({
-            "puzzle_type": puzzle_type,
-            "difficulty": difficulty,
-            "puzzle": puzzle,
-            "answer": answer
-        })
-    else:
-        # Fallback: use BERT classifier
-        inputs = tokenizer(user_input, return_tensors="pt", truncation=True, padding=True)
-        with torch.no_grad():
-            outputs = model(**inputs)
-            prediction = torch.argmax(outputs.logits, dim=1)
-        label = label_encoder.inverse_transform(prediction.numpy())[0]
-        puzzle_type, difficulty = label.split("_")
-        # Lookup puzzle from dataset
-        import json
-        with open("dataset/bert_dataset.json", "r", encoding="utf-8") as f:
-            dataset = json.load(f)
-        filtered = [item for item in dataset if item["puzzle_type"] == puzzle_type and item["difficulty"] == difficulty]
-        if filtered:
-            puzzle = filtered[0]["puzzle"]
-            answer = filtered[0]["answer"]
-        else:
-            puzzle = "No puzzle found for this type and difficulty."
-            answer = "N/A"
-        return jsonify({
-            "puzzle_type": puzzle_type,
-            "difficulty": difficulty,
-            "puzzle": puzzle,
-            "answer": answer
-        })
+            # Fallback: use BERT classifier
+            inputs = tokenizer(user_input, return_tensors="pt", truncation=True, padding=True)
+            with torch.no_grad():
+                outputs = model(**inputs)
+                prediction = torch.argmax(outputs.logits, dim=1)
+            label = label_encoder.inverse_transform(prediction.numpy())[0]
+            puzzle_type, difficulty = label.split("_")
+            
+            filtered = [item for item in dataset if item["puzzle_type"] == puzzle_type and item["difficulty"] == difficulty]
+            if filtered:
+                puzzle = filtered[0].get("puzzle", "")
+                answer = filtered[0].get("answer", "")
+                question = filtered[0].get("question", "")
+            else:
+                puzzle = "No puzzle found for this type and difficulty."
+                answer = "N/A"
+                question = ""
+            return jsonify({
+                "puzzle_type": puzzle_type,
+                "difficulty": difficulty,
+                "puzzle": puzzle,
+                "question": question,
+                "answer": answer
+            })
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host="127.0.0.1", port=5050, debug=True)

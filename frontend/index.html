@@ -47,12 +47,35 @@
     <div class="output-card hidden" id="output">
         <h3>Puzzle</h3>
         <p id="puzzleText"></p>
+        <p id="questionText" class="question"></p>
 
         <button class="toggle" onclick="toggleAnswer()">Show Answer</button>
 
         <div id="answerBox" class="hidden">
             <h3>Answer</h3>
             <p id="answerText"></p>
+        </div>
+    </div>
+
+</div>
+
+<!-- Modal for puzzle display (moved outside .container to avoid stacking/transform issues) -->
+<div id="puzzleModal" class="modal hidden">
+    <div class="modal-content">
+        <button id="closeModal" class="close">×</button>
+        <div class="modal-section modal-puzzle-box">
+            <h4>Puzzle</h4>
+            <p id="modalPuzzleText" class="modal-puzzle"></p>
+        </div>
+
+        <div class="modal-section modal-question-box">
+            <h4>Question</h4>
+            <p id="modalQuestionText" class="modal-question"></p>
+        </div>
+
+        <button id="modalShowAnswer" class="toggle">Show Answer</button>
+        <div id="modalAnswerBox" class="hidden modal-section modal-answer-box">
+            <p id="modalAnswerText" class="modal-answer-text"></p>
         </div>
     </div>
 </div>

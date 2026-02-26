@@ -1,11 +1,14 @@
 import json
+from pathlib import Path
 import torch
 from torch.utils.data import Dataset
 from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassification, Trainer, TrainingArguments
 from sklearn.preprocessing import LabelEncoder
 
-# Load training data (single BERT dataset)
-with open("dataset/bert_dataset.json", encoding="utf-8") as f:
+# Load training data (single BERT dataset) using repository-root-relative path
+ROOT = Path(__file__).resolve().parent.parent
+dataset_path = ROOT / "dataset" / "bert_dataset.json"
+with open(dataset_path, encoding="utf-8") as f:
     data = json.load(f)
 
 texts = [item["instruction"] for item in data]
@@ -17,7 +20,9 @@ encoded_labels = label_encoder.fit_transform(labels)
 
 # Save label mapping
 import pickle
-with open("training/label_encoder.pkl", "wb") as f:
+label_path = ROOT / "training" / "label_encoder.pkl"
+label_path.parent.mkdir(parents=True, exist_ok=True)
+with open(label_path, "wb") as f:
     pickle.dump(label_encoder, f)
 
 # Dataset class

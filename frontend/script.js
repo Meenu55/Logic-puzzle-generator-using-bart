@@ -9,17 +9,13 @@ async function generatePuzzle() {
     }
 
     const loader = document.getElementById("loader");
-    const output = document.getElementById("output");
-    const puzzleText = document.getElementById("puzzleText");
-    const answerText = document.getElementById("answerText");
-    const answerBox = document.getElementById("answerBox");
+    const modal = document.getElementById("puzzleModal");
+    const answerBox = document.getElementById("modalAnswerBox");
 
-    output.classList.add("hidden");
-    answerBox.classList.add("hidden");
     loader.classList.remove("hidden");
 
     try {
-        const response = await fetch("http://127.0.0.1:5000/generate", {
+        const response = await fetch("http://127.0.0.1:5050/generate", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -31,11 +27,18 @@ async function generatePuzzle() {
 
         const data = await response.json();
 
-        puzzleText.innerText = data.puzzle;
-        answerText.innerText = data.answer;
+        // populate modal content
+        document.getElementById("modalPuzzleText").innerText = data.puzzle || "";
+        document.getElementById("modalQuestionText").innerText = data.question || "";
+        document.getElementById("modalAnswerText").innerText = data.answer || "";
+        // reset modal answer visibility to hidden
+        answerBox.classList.add("hidden");
+        document.getElementById("modalShowAnswer").innerText = "Show Answer";
 
         loader.classList.add("hidden");
-        output.classList.remove("hidden");
+        // show modal and prevent page scroll
+        modal.classList.remove("hidden");
+        document.body.style.overflow = "hidden";
 
     } catch (error) {
         loader.classList.add("hidden");
@@ -45,3 +48,41 @@ async function generatePuzzle() {
 function toggleAnswer() {
     document.getElementById("answerBox").classList.toggle("hidden");
 }
+
+// Modal controls
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("puzzleModal");
+    const closeBtn = document.getElementById("closeModal");
+    const showBtn = document.getElementById("modalShowAnswer");
+    const answerBox = document.getElementById("modalAnswerBox");
+
+    if (closeBtn) {
+        closeBtn.addEventListener("click", () => {
+            modal.classList.add("hidden");
+            document.body.style.overflow = "auto";
+        });
+    }
+
+    // Toggle answer inside modal
+    if (showBtn) {
+        showBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (answerBox.classList.contains("hidden")) {
+                answerBox.classList.remove("hidden");
+                showBtn.innerText = "Hide Answer";
+            } else {
+                answerBox.classList.add("hidden");
+                showBtn.innerText = "Show Answer";
+            }
+        });
+    }
+
+    // Close on Escape
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal.classList.contains("hidden")) {
+            modal.classList.add("hidden");
+            document.body.style.overflow = "auto";
+        }
+    });
+});
