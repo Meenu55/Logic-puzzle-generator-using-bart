@@ -4,8 +4,8 @@ from torch.utils.data import Dataset
 from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassification, Trainer, TrainingArguments
 from sklearn.preprocessing import LabelEncoder
 
-# Load training data
-with open("dataset/train.json") as f:
+# Load training data (single BERT dataset)
+with open("dataset/bert_dataset.json", encoding="utf-8") as f:
     data = json.load(f)
 
 texts = [item["instruction"] for item in data]

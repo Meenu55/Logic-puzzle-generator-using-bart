@@ -1,8 +1,10 @@
 async function generatePuzzle() {
     const instruction = document.getElementById("instruction").value;
+    const puzzleType = document.getElementById("puzzleType").value;
+    const difficulty = document.getElementById("difficulty").value;
 
-    if (!instruction) {
-        alert("Please enter a puzzle instruction.");
+    if (!instruction || !puzzleType || !difficulty) {
+        alert("Please enter all fields: instruction, puzzle type, and difficulty.");
         return;
     }
 
@@ -20,7 +22,11 @@ async function generatePuzzle() {
         const response = await fetch("http://127.0.0.1:5000/generate", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ input: instruction })
+            body: JSON.stringify({
+                input: instruction,
+                puzzle_type: puzzleType,
+                difficulty: difficulty
+            })
         });
 
         const data = await response.json();
@@ -36,7 +42,6 @@ async function generatePuzzle() {
         alert("Backend is not running. Please start the server.");
     }
 }
-
 function toggleAnswer() {
     document.getElementById("answerBox").classList.toggle("hidden");
 }
